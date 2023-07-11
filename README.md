@@ -8,7 +8,7 @@ and storing the data of matches in a database.
 To install the tictactoetools package, you can use the following command:
 
 ```
-pip install tictactools
+pip install tictactoetools
 ```
 
 # Usage
