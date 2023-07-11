@@ -7,6 +7,9 @@ import os
 
 __package_dir = os.path.dirname(os.path.abspath(__file__))
 __db_path = os.path.join(__package_dir, "tic_tac_toe.db")
+print(__package_dir)
+print(__db_path)
+print(__file__)
 
 
 class Board:
