@@ -8,3 +8,4 @@ tictactoetools.egg-info/PKG-INFO
 tictactoetools.egg-info/SOURCES.txt
 tictactoetools.egg-info/dependency_links.txt
 tictactoetools.egg-info/top_level.txt
+tictactoetools/data/tic_tac_toe.db
