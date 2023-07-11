@@ -3,7 +3,7 @@ from pathlib import Path
 
 setuptools.setup(
     name="tictactoetools",
-    version="1.0",
+    version="1.0.1",
     author="Simon Valentino",
     author_email="simontvalentino@gmail.com",
     url="https://github.com/SimonValentino/tictactoetools.git",

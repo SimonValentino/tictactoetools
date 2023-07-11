@@ -5,7 +5,7 @@ from .tictac_exceptions import FullBoardError
 from dataclasses import dataclass
 import os
 
-__package_dir = os.path.dirname(__file__)
+__package_dir = os.path.dirname(os.path.abspath(__file__))
 __db_path = os.path.join(__package_dir, "tic_tac_toe.db")
 
 
