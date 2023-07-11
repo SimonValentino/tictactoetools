@@ -6,7 +6,7 @@ from dataclasses import dataclass
 import os
 
 __package_dir = os.path.dirname(__file__)
-__db_path = os.path.join(__package_dir, "data/tic_tac_toe.db")
+__db_path = os.path.join(__package_dir, "data", "tic_tac_toe.db")
 
 
 class Board:

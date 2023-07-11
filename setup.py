@@ -12,6 +12,6 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     packages=setuptools.find_packages(exclude=["tests"]),
     package_data={
-        'your_package_name': ['../data/*'],
+        "tictactoetools": ["data/tic_tac_toe.db"]
     }
 )
