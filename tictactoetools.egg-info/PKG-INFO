@@ -1,12 +1,10 @@
 Metadata-Version: 2.1
 Name: tictactoetools
-Version: 1.0.5
+Version: 2.0
 Summary: Creatively build Tic-Tac-Toe matches and store their data in a database of all users.
 Home-page: https://github.com/SimonValentino/tictactoetools.git
 Author: Simon Valentino
 Author-email: simontvalentino@gmail.com
-License: UNKNOWN
-Platform: UNKNOWN
 Description-Content-Type: text/markdown
 License-File: LICENSE
 
@@ -24,6 +22,8 @@ pip install tictactoetools
 ```
 
 # Usage
+
+### Builtin functions
 
 The tictactoetools module within the package comes with a builtin play() method as an example for playing tic-tac-toe using
 the given features.
@@ -49,4 +49,3 @@ please create an issue on the GitHub repository.
 # License
 
 This package is licensed under the MIT License. See the LICENSE file for more information.
-

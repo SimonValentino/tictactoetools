@@ -3,7 +3,7 @@ from pathlib import Path
 
 setuptools.setup(
     name="tictactoetools",
-    version="1.0.5",
+    version="2.0",
     author="Simon Valentino",
     author_email="simontvalentino@gmail.com",
     url="https://github.com/SimonValentino/tictactoetools.git",
@@ -11,7 +11,4 @@ setuptools.setup(
     long_description=Path("README.md").read_text(),
     long_description_content_type="text/markdown",
     packages=setuptools.find_packages(exclude=["tests"]),
-    package_data={
-        "tictactoetools": ["data/tic_tac_toe.db"]
-    }
 )

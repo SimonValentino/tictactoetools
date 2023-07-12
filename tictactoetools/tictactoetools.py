@@ -6,9 +6,6 @@ from dataclasses import dataclass
 import os
 import mysql.connector
 
-__package_dir = os.path.dirname(__file__)
-__db_path = os.path.join(__package_dir, "data", "tic_tac_toe.db")
-
 
 class Board:
     __BLANK_SPACE = " "
@@ -234,60 +231,99 @@ def log_match(match: Match) -> None:
     board_data = match.board._as_json()
     winner_id = get_player_id(match.winner) if match.winner else None
 
-    with sqlite3.connect(__db_path) as conn:
-        conn.execute("""
-        INSERT INTO matches (
-            player1_id,
-            player2_id,
-            start_time,
-            end_time,
-            board,
-            winner_id
-        )
-        VALUES (
-            ?,
-            ?,
-            ?,
-            ?,
-            ?,
-            ?
-        )
-        """, (p1_id, p2_id, formatted_start_datetime, formatted_end_datetime, json.dumps(board_data), winner_id))
+    with mysql.connector.connect(
+        host='sql9.freesqldatabase.com',
+        user='sql9632131',
+        password='iWCMKp7Q8R',
+        database='sql9632131'
+    ) as conn:
+        cursor = conn.cursor()
+        try:
+            cursor.execute("""
+            INSERT INTO matches (
+                player1_id,
+                player2_id,
+                start_time,
+                end_time,
+                board,
+                winner_id
+            )
+            VALUES (
+                %s,
+                %s,
+                %s,
+                %s,
+                %s,
+                %s
+            )
+            """, (p1_id, p2_id, formatted_start_datetime, formatted_end_datetime, json.dumps(board_data), winner_id))
+            conn.commit()
+        finally:
+            cursor.close()
 
 
 def get_player_id(username: str) -> int:
     if not username_exists(username):
         create_new_user(username)
 
-    with sqlite3.connect(__db_path) as conn:
+    with mysql.connector.connect(
+        host='sql9.freesqldatabase.com',
+        user='sql9632131',
+        password='iWCMKp7Q8R',
+        database='sql9632131'
+    ) as conn:
         cursor = conn.cursor()
-        cursor.execute("""
-            SELECT player_id
-            FROM players
-            WHERE username = ?
-            """, (username,))
-        row = cursor.fetchone()
-        return row[0]
+        try:
+            cursor.execute("""
+                SELECT player_id
+                FROM players
+                WHERE username = %s
+                """, (username,))
+            row = cursor.fetchone()
+            # Consume and discard any remaining unread results
+            cursor.fetchall()
+            return row[0]
+        finally:
+            cursor.close()
 
 
 def username_exists(username: str) -> bool:
-    with sqlite3.connect(__db_path) as conn:
+    with mysql.connector.connect(
+            host='sql9.freesqldatabase.com',
+            user='sql9632131',
+            password='iWCMKp7Q8R',
+            database='sql9632131'
+    ) as conn:
         cursor = conn.cursor()
-        cursor.execute("""
-        SELECT COUNT(username)
-        FROM players
-        WHERE username = ?
-        """, (username,))
-        row = cursor.fetchone()
-        return row[0] > 0
+        try:
+            cursor.execute("""
+            SELECT EXISTS(
+                SELECT 1 FROM players WHERE username = %s
+            ) AS username_exists
+            """, (username,))
+            exists = bool(cursor.fetchone()[0])
+            # Consume and discard any remaining unread results
+            cursor.fetchall()
+            return exists
+        finally:
+            cursor.close()
 
 
 def create_new_user(username: str) -> None:
-    with sqlite3.connect(__db_path) as conn:
-        conn.execute("""
-        INSERT INTO players (username)
-        VALUES (
-            ?
-        )
-        """, (username,))
-        conn.commit()
+    with mysql.connector.connect(
+            host='sql9.freesqldatabase.com',
+            user='sql9632131',
+            password='iWCMKp7Q8R',
+            database='sql9632131'
+    ) as conn:
+        cursor = conn.cursor()
+        try:
+            cursor.execute("""
+            INSERT INTO players (username)
+            VALUES (
+                %s
+            )
+            """, (username,))
+            conn.commit()
+        finally:
+            cursor.close()

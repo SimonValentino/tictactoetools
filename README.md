@@ -13,6 +13,8 @@ pip install tictactoetools
 
 # Usage
 
+### Builtin functions
+
 The tictactoetools module within the package comes with a builtin play() method as an example for playing tic-tac-toe using
 the given features.
 
