@@ -13,22 +13,45 @@ pip install tictactoetools
 
 # Usage
 
-### Builtin functions
+## Builtin Functions
 
-The tictactoetools module within the package comes with a builtin play() method as an example for playing tic-tac-toe using
-the given features.
+The package includes several built-in functions that facilitate the gameplay and interaction with the Tic-Tac-Toe game.
+These functions provide functionality for playing matches, creating new matches, prompting user input, managing player moves,
+and handling rematch options. There are also builtin functions for working with the database (see "Database")
 
-The tictactoetools module also has functions for creating new users in the tictactoe.db database, logging matches in the
-database, starting new matches, and even prompting values from the user for playing Tic-Tac-Toe.
+The builtin play() function is an example of how all the functions can work together to make a Tic-Tac-Toe game, as well
+as logging data on the database.
 
-### Board Class
+## Database
 
-The Board class represents the Tic-Tac-Toe game board. It provides methods for displaying the board, marking cells with
-any symbol, checking for a winner, and more.
+The tictactoetools package includes several built-in functions that facilitate working with the database, such as logging
+matches, retrieving player IDs, checking username existence, creating new users, and fetching player and match statistics.
 
-### Match Class
+The database for this package consists of the following tables:
 
-The Match class is a data class responsible for storing information about the players, start and end times of a match,
+### Table: players
+
+- `player_id`: Unique identifier for each player.
+- `username`: The username of the player.
+
+### Table: matches
+
+- `match_id`: Unique identifier for each match.
+- `player1_id`: The ID of the first player in the match.
+- `player2_id`: The ID of the second player in the match.
+- `start_time`: The start time of the match.
+- `end_time`: The end time of the match.
+- `board`: The game board data for the match.
+- `winner_id`: The ID of the player who won the match.
+
+## Board Class
+
+The `Board` class represents the internal Tic Tac Toe game board. It provides functionality to manage and display the board
+state, check for a winner, mark cells with player symbols, and perform other board-related operations.
+
+## Match Class
+
+The `Match` class is a data class responsible for storing information about the players, start and end times of a match,
 the board configuration, and the winner.
 
 # Contributing

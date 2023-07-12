@@ -1,5 +1,4 @@
 import json
-import sqlite3
 from datetime import datetime
 from .tictac_exceptions import FullBoardError
 from dataclasses import dataclass
@@ -325,5 +324,88 @@ def create_new_user(username: str) -> None:
             )
             """, (username,))
             conn.commit()
+        finally:
+            cursor.close()
+
+
+def get_player_stats(usernames: list[str] = None) -> list:
+    data = []
+
+    with mysql.connector.connect(
+            host='sql9.freesqldatabase.com',
+            user='sql9632131',
+            password='iWCMKp7Q8R',
+            database='sql9632131'
+    ) as conn:
+        cursor = conn.cursor()
+
+        try:
+            if not usernames:
+                cursor.execute("""
+                SELECT username, num_matches, num_wins
+                FROM player_stats
+                """)
+            else:
+                placeholders = ', '.join(['%s'] * len(usernames))
+                cursor.execute(f"""
+                SELECT username, num_matches, num_wins
+                FROM player_stats
+                WHERE username IN ({placeholders})
+                """, usernames)
+            rows = cursor.fetchall()
+            for row in rows:
+                username, num_matches, num_wins = row
+                data.append({
+                    "username": username,
+                    "num_matches": num_matches,
+                    "num_wins": num_wins
+                })
+            return data
+        finally:
+            cursor.close()
+
+
+def get_match_stats(usernames: list[str] = None) -> list:
+    data = []
+
+    with mysql.connector.connect(
+            host='sql9.freesqldatabase.com',
+            user='sql9632131',
+            password='iWCMKp7Q8R',
+            database='sql9632131'
+    ) as conn:
+        cursor = conn.cursor()
+
+        try:
+            if not usernames:
+                cursor.execute("""
+                SELECT p1.username, p2.username, m.start_time, m.end_time, m.board, w.username
+                FROM matches m
+                INNER JOIN players p1 ON m.player1_id = p1.player_id
+                INNER JOIN players p2 ON m.player2_id = p2.player_id
+                INNER JOIN players w ON m.winner_id = w.player_id
+                """)
+            else:
+                placeholders = ', '.join(['%s'] * len(usernames))
+                cursor.execute(f"""
+                SELECT p1.username, p2.username, m.start_time, m.end_time, m.board, w.username
+                FROM matches m
+                INNER JOIN players p1 ON m.player1_id = p1.player_id
+                INNER JOIN players p2 ON m.player2_id = p2.player_id
+                INNER JOIN players w ON m.winner_id = w.player_id
+                WHERE p1.username IN ({placeholders}) OR p2.username IN ({placeholders})
+                """, usernames * 2)  # Duplicate the usernames to match the placeholders
+            rows = cursor.fetchall()
+            for row in rows:
+                player1, player2, st, end, board, winner = row
+                data.append({
+                    "player1": player1,
+                    "player2": player2,
+                    "start_time": st,
+                    "end_time": end,
+                    "board": board,
+                    "winner": winner
+                })
+            return data
         finally:
             cursor.close()
