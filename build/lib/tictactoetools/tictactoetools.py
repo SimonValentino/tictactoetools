@@ -466,8 +466,6 @@ def get_player_id(username: str) -> int:
             WHERE username = %s
             """, (username,))
         row = conn.cur.fetchone()
-        # Consume and discard any remaining unread results
-        conn.cur.fetchall()
         return row[0]
 
 
@@ -486,8 +484,6 @@ def username_exists(username: str) -> bool:
         ) AS username_exists
         """, (username,))
         exists = bool(conn.cur.fetchone()[0])
-        # Consume and discard any remaining unread results
-        conn.cur.fetchall()
         return exists
 
 
